@@ -43,27 +43,6 @@ public class ExpenseFilterRepository {
             }
         });
 
-//        Predicate[] predicates = filters.stream()
-//                .map(filter -> {
-//                    String field = filter.getFieldName();
-//                    Object value = filter.getValue();
-//                    Path<Object> path = root.get(field);
-//
-//                    return buildPredicate(criteriaBuilder, root, filter);
-
-//                    if (value instanceof String) {
-//                        return criteriaBuilder.like(criteriaBuilder.lower(root.get(field)), "%" + ((String) value).toLowerCase() + "%");
-//                    } else if (value instanceof Integer) {
-//                        return criteriaBuilder.equal(path, value);
-//                    } else if (value instanceof Double) {
-//                        return criteriaBuilder.equal(path, value);
-//                    } else if (value instanceof LocalDate) {
-//                        return criteriaBuilder.equal(path, value);
-//                    }
-//                })
-//                .filter(Objects::nonNull)
-//                .toArray(Predicate[]::new);
-
         criteriaQuery.where(predicates.toArray(new Predicate[0]));
 
         List<Expense> expenses = entityManager.createQuery(criteriaQuery).setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize()).getResultList();
