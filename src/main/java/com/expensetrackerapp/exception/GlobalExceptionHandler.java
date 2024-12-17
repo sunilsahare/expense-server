@@ -59,4 +59,12 @@ public class GlobalExceptionHandler {
         apiResponse.setTimestamp(new Timestamp(System.currentTimeMillis()));
         return apiResponse;
     }
+
+    public static HttpApiResponse buildApiResponse(String message) {
+        HttpApiResponse apiResponse = new HttpApiResponse();
+        apiResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        apiResponse.setMessage(message);
+        apiResponse.setTimestamp(new Timestamp(System.currentTimeMillis()));
+        return apiResponse;
+    }
 }
