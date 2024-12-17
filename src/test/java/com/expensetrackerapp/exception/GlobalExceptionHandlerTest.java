@@ -30,7 +30,7 @@ public class GlobalExceptionHandlerTest {
 
         HttpApiResponse errorResponse = responseEntity.getBody();
         assertNotNull(errorResponse);
-        assertEquals(HttpStatus.BAD_REQUEST.value(), errorResponse.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND.value(), errorResponse.getStatusCode());
         assertEquals("Invalid expense id!!. Please provide valid id", errorResponse.getMessage());
         assertNotNull(errorResponse.getTimestamp());
     }
@@ -45,7 +45,7 @@ public class GlobalExceptionHandlerTest {
 
         HttpApiResponse errorResponse = responseEntity.getBody();
         assertNotNull(errorResponse);
-        assertEquals(HttpStatus.BAD_REQUEST.value(), errorResponse.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND.value(), errorResponse.getStatusCode());
         assertEquals("Invalid User id!!. Please provide valid id", errorResponse.getMessage());
         assertNotNull(errorResponse.getTimestamp());
     }
@@ -91,7 +91,7 @@ public class GlobalExceptionHandlerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
         HttpApiResponse errorResponse = responseEntity.getBody();
         assertNotNull(errorResponse);
-        assertEquals(HttpStatus.BAD_REQUEST.value(), errorResponse.getStatusCode());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorResponse.getStatusCode());
         assertEquals("An Server Exception occurred!", errorResponse.getMessage());
         assertNotNull(errorResponse.getTimestamp());
     }

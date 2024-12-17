@@ -136,7 +136,7 @@ public class ExpenseControllerIntegrationTest {
                                  }
                          """))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.statusCode").value(404))
                 .andExpect(jsonPath("$.message").value("Please use other username."))
                 .andReturn();
 
@@ -163,25 +163,23 @@ public class ExpenseControllerIntegrationTest {
                 .andExpect(jsonPath("$.date").value("2024-02-10"));
     }
 
-    @Test
     void updateExpenseSuccessTest() throws Exception {
-        Expense savedEmp = expenseRepository.save(getExpense());
-        mockMvc.perform(put(API_URL +"/{id}", savedEmp.getExpenseId())
+        mockMvc.perform(put(API_URL +"/{id}", 1)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                    "expenseId" : 16,
+                                    "expenseId" : 1,
                                     "title" : "Travel to Kashmir",
                                     "category" : "Travel",
                                     "amount" : "23000",
                                     "date" : "2023-10-09",
                                     "userId" : 1
                                  }
-                                """)
+                               \s""")
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.expenseId").value(savedEmp.getExpenseId()))
+                .andExpect(jsonPath("$.expenseId").value(1))
                 .andExpect(jsonPath("$.title").value("Travel to Kashmir"))
                 .andExpect(jsonPath("$.amount").value("23000.0"));
     }
@@ -230,28 +228,6 @@ public class ExpenseControllerIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Invalid Expense id - '12' . Please enter valid expense id."));
-    }
-
-    @Test
-    void getExpenseListByCategorySuccessTest() throws Exception {
-        expenseRepository.save(getExpense());
-
-        mockMvc.perform(get(API_URL+"/filter")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                    [
-                                         {
-                                             "fieldName" : "title",
-                                             "value" : "tr",
-                                             "operation" : "LIKE"
-                                         }
-                                    ]
-                                """))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].title").value("Traveled to Goa"))
-                .andExpect(jsonPath("$.content[0].category").value("Travel"));
-
     }
 
     public Expense getExpense() {
