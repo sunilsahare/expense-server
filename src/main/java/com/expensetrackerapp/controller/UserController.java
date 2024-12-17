@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/auth")
 public class UserController {

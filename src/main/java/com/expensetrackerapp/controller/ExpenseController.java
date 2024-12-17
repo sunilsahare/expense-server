@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/expenses")
 public class ExpenseController {
@@ -49,9 +50,9 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.getExpenseByIdOfLoggedInUser(id));
     }
 
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public ResponseEntity<Page<Expense>> getAllFilteredExpenses(@RequestBody List<Filter> filters, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
-                                                                @RequestParam(defaultValue = "id") String sortBy, @RequestParam(defaultValue = "asc")String sortDirection) {
+                                                                @RequestParam(defaultValue = "expenseId") String sortBy, @RequestParam(defaultValue = "asc")String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         return ResponseEntity.ok(expenseService.getFilteredExpenses(filters, PageRequest.of(page, size, sort)));
     }
@@ -59,9 +60,8 @@ public class ExpenseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpApiResponse<Object>> deleteExpense(@PathVariable int id) throws ExpenseNotFoundException {
         expenseService.deleteExpenseById(id);
-        HttpApiResponse<Object> httpApiResponse = GlobalExceptionHandler.buildApiResponse("Expense with id - " + id + " has been successfully deleted.");
+        HttpApiResponse<Object> httpApiResponse = GlobalExceptionHandler.buildApiResponse("Expense with id - " + id + " has been successfully deleted.",HttpStatus.OK);
         return new ResponseEntity<>(httpApiResponse, HttpStatus.OK);
     }
-
 
 }

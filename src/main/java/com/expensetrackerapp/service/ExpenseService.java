@@ -36,7 +36,6 @@ public class ExpenseService {
 
     public Expense getExpenseByIdOfLoggedInUser(int id) throws ExpenseNotFoundException {
         Expense expense = expenseRepository.findByExpenseIdAndUserId(id, userService.getLoggedInUserId()).orElseThrow(() -> new ExpenseNotFoundException("Invalid Expense id - '" + id + "' . Please enter valid expense id."));
-        throwExceptionIfExpencesIsNotOfLoggedInUsers(expense);
         return expense;
     }
 
@@ -46,14 +45,11 @@ public class ExpenseService {
 
     public void deleteExpenseById(int id) throws ExpenseNotFoundException {
         Expense existingExpenses = getExpenseById(id);
-        throwExceptionIfExpencesIsNotOfLoggedInUsers(existingExpenses);
         expenseRepository.deleteById(id);
     }
 
     public Expense updateExpense(@Valid Expense expense) throws ExpenseNotFoundException {
         Expense existingExpense = getExpenseById(expense.getExpenseId());
-
-        throwExceptionIfExpencesIsNotOfLoggedInUsers(existingExpense);
 
         // allowed only following filed to be updated
         existingExpense.setAmount(expense.getAmount());
@@ -62,13 +58,6 @@ public class ExpenseService {
         existingExpense.setTitle(expense.getTitle());
 
         return expenseRepository.save(existingExpense);
-    }
-
-    private void throwExceptionIfExpencesIsNotOfLoggedInUsers(Expense existingExpense) throws ExpenseNotFoundException {
-        // checck existing expesnse is belongs to loggedin user or not
-        if (existingExpense != null && !existingExpense.getUserId().equals(userService.getLoggedInUserId())) {
-            throw new ExpenseNotFoundException("The Expenses you are trying to updated is not yours. We allowed to update only yours Expenses");
-        }
     }
 
     public Page<Expense> getFilteredExpenses(List<Filter> filters, Pageable pageable) {

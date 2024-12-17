@@ -1,15 +1,12 @@
 package com.expensetrackerapp.service;
 
 import com.expensetrackerapp.constants.ROLE;
-import com.expensetrackerapp.exception.HttpApiResponse;
-import com.expensetrackerapp.exception.UserException;
 import com.expensetrackerapp.exception.UserNotFoundException;
 import com.expensetrackerapp.modal.JwtRequest;
 import com.expensetrackerapp.modal.User;
 import com.expensetrackerapp.repository.UserRepository;
 import com.expensetrackerapp.security.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
